@@ -26,8 +26,8 @@ struct Index {
   @State expandedStatus: boolean = false;  // 状态区域是否展开
 
   // 配置
-  @State serverUrl: string = 'http://192.168.1.100:7860';
-  @State deviceId: string = '';
+  @State serverUrl: string = 'http://192.168.1.105:7860';
+  @State deviceId: string = '127.0.0.1:5555';  // HDC 默认设备
   @State showConfig: boolean = false;
 
   // 服务实例

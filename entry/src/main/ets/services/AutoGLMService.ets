@@ -58,7 +58,8 @@ export class AutoGLMService {
    */
   configure(serverUrl: string, deviceId: string): void {
     this.serverUrl = serverUrl;
-    this.deviceId = deviceId || 'default';
+    // 使用提供的设备 ID，如果为空则使用 HDC 默认值
+    this.deviceId = deviceId || '127.0.0.1:5555';
     this.isInitialized = false;
     hilog.info(0x0000, 'AutoGLM', `配置服务: ${serverUrl}, 设备: ${this.deviceId}`);
   }
