@@ -11,42 +11,6 @@
     {
       "name": "EntryAbility_label",
       "value": "Agent Controller"
-    },
-    {
-      "name": "app_title",
-      "value": "AGENT CONTROLLER"
-    },
-    {
-      "name": "input_placeholder",
-      "value": "输入控制指令..."
-    },
-    {
-      "name": "button_execute",
-      "value": "执行任务"
-    },
-    {
-      "name": "status_label",
-      "value": "状态"
-    },
-    {
-      "name": "status_ready",
-      "value": "就绪"
-    },
-    {
-      "name": "status_executing",
-      "value": "正在执行..."
-    },
-    {
-      "name": "status_success",
-      "value": "执行成功"
-    },
-    {
-      "name": "status_failed",
-      "value": "执行失败"
-    },
-    {
-      "name": "error_empty_input",
-      "value": "请输入任务指令"
     }
   ]
 }

@@ -252,21 +252,4 @@ export class AutoGLMService {
     });
   }
 
-  /**
-   * 检查连接状态
-   */
-  isConnectedToServer(): boolean {
-    return this.isInitialized;
-  }
-
-  /**
-   * 获取配置
-   */
-  getConfig(): ServiceConfig {
-    const config: ServiceConfig = {
-      serverUrl: this.serverUrl,
-      deviceId: this.deviceId
-    };
-    return config;
-  }
 }
