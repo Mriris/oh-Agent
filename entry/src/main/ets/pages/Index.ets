@@ -23,6 +23,7 @@ struct Index {
   @State currentAction: string = '';
   @State stepCount: number = 0;
   @State isConnected: boolean = false;  // 连接状态（用于 UI 刷新）
+  @State expandedStatus: boolean = false;  // 状态区域是否展开
 
   // 配置
   @State serverUrl: string = 'http://192.168.1.100:7860';
@@ -155,6 +156,8 @@ struct Index {
   updateStatus(status: TaskStatus, message: string): void {
     this.taskStatus = status;
     this.statusMessage = message;
+    // 新状态时自动收起展开区域
+    this.expandedStatus = false;
   }
 
   // 获取状态颜色
@@ -521,35 +524,81 @@ struct Index {
   @Builder
   buildStatusArea() {
     Column() {
-      Text('状态')
-        .fontSize(12)
-        .fontColor('#8892b0')
-        .margin({ bottom: 8 })
-
       Row() {
-        Circle()
-          .width(10)
-          .height(10)
-          .fill(this.getStatusColor())
-          .shadow({
-            radius: 8,
-            color: this.getStatusColor(),
-            offsetX: 0,
-            offsetY: 0
-          })
-          .margin({ right: 10 })
+        Text('状态')
+          .fontSize(12)
+          .fontColor('#8892b0')
 
-        Text(this.statusMessage)
-          .fontSize(14)
-          .fontColor('#ffffff')
+        if (this.statusMessage.length > 50) {
+          Text(this.expandedStatus ? '收起 ▲' : '展开 ▼')
+            .fontSize(10)
+            .fontColor('#00d9ff')
+            .margin({ left: 8 })
+            .onClick(() => {
+              this.expandedStatus = !this.expandedStatus;
+            })
+        }
       }
       .width('100%')
-      .height(44)
-      .padding({ left: 16, right: 16 })
+      .justifyContent(FlexAlign.SpaceBetween)
+      .margin({ bottom: 8 })
+
+      Column() {
+        Row() {
+          Circle()
+            .width(10)
+            .height(10)
+            .fill(this.getStatusColor())
+            .shadow({
+              radius: 8,
+              color: this.getStatusColor(),
+              offsetX: 0,
+              offsetY: 0
+            })
+            .margin({ right: 10 })
+            .alignSelf(ItemAlign.Start)
+
+          if (this.expandedStatus || this.statusMessage.length <= 50) {
+            // 展开模式或短文本：显示完整内容，支持滚动
+            Column() {
+              Scroll() {
+                Text(this.statusMessage)
+                  .fontSize(14)
+                  .fontColor('#ffffff')
+                  .lineHeight(20)
+                  .wordBreak(WordBreak.BREAK_ALL)
+              }
+              .width('100%')
+              .scrollBar(BarState.Auto)
+            }
+            .width('100%')
+            .constraintSize({ maxHeight: 200 })
+          } else {
+            // 折叠模式：只显示前 50 个字符
+            Text(this.statusMessage.substring(0, 50) + '...')
+              .fontSize(14)
+              .fontColor('#ffffff')
+              .lineHeight(20)
+              .maxLines(2)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .onClick(() => {
+                this.expandedStatus = true;
+              })
+          }
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+        .alignItems(VerticalAlign.Top)
+      }
+      .width('100%')
       .backgroundColor('rgba(26, 26, 46, 0.6)')
       .borderRadius(8)
       .borderWidth(1)
       .borderColor('rgba(0, 217, 255, 0.2)')
+      .animation({
+        duration: 300,
+        curve: Curve.EaseInOut
+      })
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
