@@ -110,7 +110,7 @@ struct Index {
       return;
     }
 
-    if (!this.autoGLMService.isConnectedToServer()) {
+    if (!this.isConnected) {
       this.updateStatus(TaskStatus.FAILED, '未连接到后端');
       return;
     }
@@ -274,16 +274,16 @@ struct Index {
         Circle()
           .width(8)
           .height(8)
-          .fill(this.autoGLMService.isConnectedToServer() ? '#05ffa1' : '#ff2a6d')
+          .fill(this.isConnected ? '#05ffa1' : '#ff2a6d')
           .shadow({
             radius: 6,
-            color: this.autoGLMService.isConnectedToServer() ? '#05ffa1' : '#ff2a6d',
+            color: this.isConnected ? '#05ffa1' : '#ff2a6d',
             offsetX: 0,
             offsetY: 0
           })
           .margin({ right: 8 })
 
-        Text(this.autoGLMService.isConnectedToServer() ? '已连接' : '未连接')
+        Text(this.isConnected ? '已连接' : '未连接')
           .fontSize(12)
           .fontColor('#ffffff')
       }
@@ -299,7 +299,7 @@ struct Index {
             this.showConfig = !this.showConfig;
           })
 
-        if (!this.autoGLMService.isConnectedToServer()) {
+        if (!this.isConnected) {
           Button('重连')
             .fontSize(12)
             .height(32)
@@ -450,7 +450,7 @@ struct Index {
         .fontColor('#0a0e27')
         .backgroundColor('#00d9ff')
         .borderRadius(25)
-        .enabled(this.taskStatus !== TaskStatus.EXECUTING && this.autoGLMService.isConnectedToServer())
+        .enabled(this.taskStatus !== TaskStatus.EXECUTING && this.isConnected)
         .opacity(this.taskStatus === TaskStatus.EXECUTING ? 0.6 : 1.0)
         .onClick(() => {
           this.executeTask();
